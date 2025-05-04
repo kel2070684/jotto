@@ -1,4 +1,7 @@
 """
+Kelly Sturdevant
+Final Project for 2025 Spring Semester Python 2 (CIS256 13732)
+
 Jotto is a simple word guessing game
 (modeled after https://en.wikipedia.org/wiki/Jotto)
 """
@@ -20,13 +23,28 @@ class JottoGame:
 
     def print_game_info(self):
         print(f"\nGame status: {self.status}")
-        print(f"Number of turns: {len(self.guesses)}\n")
+        print(f"Number of guesses: {len(self.guesses)}\n")
+        for guess in self.guesses:
+            print(f"\tGuess: {guess['word']}\t Jots: {guess['jots']}")
 
     def get_status(self):
         return self.status
 
-    def is_guess_word_valid(self, guess_word):
-        return guess_word in self.valid_words
+    def get_valid_words(self, word_length):
+        valid_words = []
+
+        with open("scrabble_words.txt", newline="") as scrabble_words:
+            word_reader = csv.DictReader(
+                scrabble_words, delimiter="\t", fieldnames=["word", "definition"]
+            )
+            for line in word_reader:
+                if len(line["word"]) == word_length:
+                    valid_words.append(
+                        {"word": line["word"].lower(), "definition": line["definition"]}
+                    )
+
+    def select_secret_word(self):
+        return self.valid_words(randint(0, len(self.valid_words) - 1))
 
     def add_guess(self, guess_word):
         guess_word = guess_word.lower()
@@ -46,8 +64,12 @@ class JottoGame:
         else:
             return "guess is invalid"
 
+    def is_guess_word_valid(self, guess_word):
+        return guess_word.lower() in self.valid_words
+
     def calculate_jots(self, guess_word):
         jots = 0
+        guess_word = guess_word.lower()
 
         for letter in guess_word:
             for character in self.__secret_word["word"]:
@@ -57,19 +79,3 @@ class JottoGame:
                     letter = "@"
 
         return jots
-
-    def select_secret_word(self):
-        return self.valid_words(randint(0, len(self.valid_words) - 1))
-
-    def get_valid_words(self, word_length):
-        valid_words = []
-
-        with open("scrabble_words.txt", newline="") as scrabble_words:
-            word_reader = csv.DictReader(
-                scrabble_words, delimiter="\t", fieldnames=["word", "definition"]
-            )
-            for line in word_reader:
-                if len(line["word"]) == word_length:
-                    valid_words.append(
-                        {"word": line["word"].lower(), "definition": line["definition"]}
-                    )

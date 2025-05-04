@@ -36,6 +36,7 @@ class JottoGame:
     def import_valid_scrabble_words(self):
         valid_words = []
 
+        # scrabble_words.txt by Collins Scrabble Words (2019) - http://drive.google.com/file/d/1XIFdZukAcDRiDIOgR_rHpICrrgJbLBxV/view
         with open("scrabble_words.txt", newline="") as scrabble_words:
             word_reader = csv.DictReader(
                 scrabble_words, delimiter="\t", fieldnames=["word", "definition"]
@@ -64,12 +65,20 @@ class JottoGame:
                 jots = self.calculate_jots(guess_word)
 
             self.guesses.append({"Guess": guess_word, "Jots": jots, "Jotto": isJotto})
-            return f"{self.guesses[-1]["jots"]} jots!"
+            return f"{self.guesses[-1]["Jots"]} jots!"
         else:
             return "guess is invalid"
 
     def is_guess_word_valid(self, guess_word):
-        return guess_word.lower() in self.valid_words
+        is_valid = False
+        guess_word = guess_word.lower()
+
+        for word in self.valid_words:
+            if guess_word == word["word"]:
+                is_valid = True
+                break
+
+        return is_valid
 
     def calculate_jots(self, guess_word):
         jots = 0

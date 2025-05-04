@@ -26,7 +26,10 @@ def get_menu_selection():
 
 
 def play_a_game():
-    game = JottoGame()
+    game = JottoGame("exist")
+    print("\nOk, let's start a new game\n")
+    while game.get_status != "Won":
+        print(game.add_guess(input("Enter a guess word here: ")))
 
 
 def print_rules():
@@ -55,7 +58,7 @@ def print_valid_words():
 
 match get_menu_selection():
     case 1:
-        print("Ok, let's start a new game\n")
+        play_a_game()
     case 2:
         print_rules()
     case 3:

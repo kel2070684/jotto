@@ -26,7 +26,7 @@ def get_menu_selection():
 
 
 def play_a_game():
-    game = JottoGame("exist")
+    game = JottoGame()
     print("\nOk, let's start a new game\n")
     while game.get_status() != "Won":
         print(game.add_guess(input("Enter a guess word here: ")))

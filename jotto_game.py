@@ -56,37 +56,33 @@ class JottoGame:
         guess_word = guess_word.lower()
         isJotto = False
         jots = 0
+        result = ""
 
         if not self.is_guess_word_valid(guess_word):
-            return "guess is invalid"
+            result = "guess is invalid"
         else:
             if self.__secret_word["word"] != guess_word:
                 jots = self.calculate_jots(guess_word)
+                result = f"{guess_word.title()} is {jots} jots!"
             else:
                 jots = 5
                 isJotto = True
                 self.status = "Won"
+                result = f"\n\t Jotto! {guess_word.title()} is the secret word!\n"
 
             self.guesses.append({"guess": guess_word, "jots": jots, "Jotto": isJotto})
-            return f"{self.guesses[-1]["jots"]} jots!"
+
+        return result
 
     def is_guess_word_valid(self, guess_word):
-        is_valid = False
-        guess_word = guess_word.lower()
-
         for word in self.valid_words:
             if guess_word == word["word"]:
-                is_valid = True
-                break
+                return True
 
-        return is_valid
+        return False
 
     def calculate_jots(self, guess_word):
         guess_letters = Counter(guess_word.lower())
         target_letters = Counter(self.__secret_word["word"])
 
         return (guess_letters & target_letters).total()
-
-    def print_guesses(self):
-        for guess in self.guesses:
-            print(guess)

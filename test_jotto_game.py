@@ -43,12 +43,15 @@ class TestJottoGame(unittest.TestCase):
 
     def test_add_guess(self):
         self.assertEqual(self.game_exist.add_guess("aaaaa"), "guess is invalid")
-        self.assertEqual(self.game_exist.add_guess("blame"), "1 jots!")
-        self.assertEqual(self.game_exist.add_guess("stump"), "2 jots!")
-        self.assertEqual(self.game_exist.add_guess("axels"), "3 jots!")
-        self.assertEqual(self.game_exist.add_guess("tries"), "4 jots!")
-        self.assertEqual(self.game_exist.add_guess("exits"), "5 jots!")
-        self.assertEqual(self.game_exist.add_guess("exist"), "5 jots!")
+        self.assertEqual(self.game_exist.add_guess("blame"), "Blame is 1 jots!")
+        self.assertEqual(self.game_exist.add_guess("stump"), "Stump is 2 jots!")
+        self.assertEqual(self.game_exist.add_guess("axels"), "Axels is 3 jots!")
+        self.assertEqual(self.game_exist.add_guess("tries"), "Tries is 4 jots!")
+        self.assertEqual(self.game_exist.add_guess("exits"), "Exits is 5 jots!")
+        self.assertEqual(
+            self.game_exist.add_guess("exist"),
+            "\n\t Jotto! Exist is the secret word!\n",
+        )
 
     def test_get_status_won(self):
         self.game_exist.add_guess("exist")

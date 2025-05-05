@@ -22,12 +22,6 @@ class JottoGame:
         else:
             self.__secret_word = self.select_secret_word()
 
-    def print_game_info(self):
-        print(f"\nGame status: {self.status}")
-        print(f"Number of guesses: {len(self.guesses)}")
-        for guess in self.guesses:
-            print(f"\tGuess: {guess['guess']}\t Jots: {guess['jots']}")
-
     def get_status(self):
         return self.status
 
@@ -63,12 +57,12 @@ class JottoGame:
         else:
             if self.__secret_word["word"] != guess_word:
                 jots = self.calculate_jots(guess_word)
-                result = f"{guess_word.title()} is {jots} jots!"
+                result = f"{guess_word.title()} is {jots} jots"
             else:
                 jots = 5
                 isJotto = True
                 self.status = "Won"
-                result = f"\n\t Jotto! {guess_word.title()} is the secret word!\n"
+                result = f"\t Jotto! You guessed the secret word in {len(self.guesses) + 1} turns!\n"
 
             self.guesses.append({"guess": guess_word, "jots": jots, "Jotto": isJotto})
 

@@ -16,7 +16,7 @@ def get_menu_selection():
         print("\nWelcome to Jotto!\n")
         print("1. Start a new game")
         print("2. View the rules of Jotto")
-        print("3. See a list of valid words")
+        print("3. View valid words by starting letter")
         print("4. Exit")
         menu_selection = int(
             input("\nWhat would you like to do? Enter the number here: ")
@@ -26,7 +26,7 @@ def get_menu_selection():
 
 
 def play_a_game():
-    game = JottoGame()
+    game = JottoGame("exist")
     print("\nOk, let's start a new game\n")
     while game.get_status() != "Won":
         print(game.add_guess(input("Enter a guess word here: ")))
@@ -37,9 +37,10 @@ def print_rules():
         "\nJotto is a deductive word game with the purpose of correctly guessing a 5 letter word. The secret word is a valid scrabble word, and no proper nouns are allowed.\n"
         "The player submits valid 5 letter words as guesses, and the game returns the number of letters from the guess word that match a letter in the secret word. This number of matching letters is called the jots.\n"
         "For example, if the secret word is 'games', and the guess word is 'soggy', then there are 2 jots, one for the matching 'g', and one for the matching 's'.\n"
-        "For another example, if the secret word is 'apple', and the guess word is 'peels', then there are 2 jots, one for the matching 'p', and one for the matching 'e'.\n"
+        "For another example, if the secret word is 'apple', and the guess word is 'peels', then there are 3 jots, for the matching 'p', 'l', and 'e'.\n"
         "When the secret word is correctly guessed, that's Jotto!\n\n"
         "Learn more about Jotto on Wikipedia (https://en.wikipedia.org/wiki/Jotto).\n\n"
+        "Collins Scrabble Words (2019) and their definitions can be found here: http://drive.google.com/file/d/1XIFdZukAcDRiDIOgR_rHpICrrgJbLBxV/view\n\n"
     )
     print(rules)
 
@@ -47,12 +48,14 @@ def print_rules():
 def print_valid_words():
     game = JottoGame()
     starting_letter = ""
+
     while starting_letter != "0":
-        starting_letter = input("\nEnter a starting letter here (Enter 0 to exit): ")
-        print()
+        starting_letter = input(
+            str("\nEnter a single starting letter here (0 to exit): ")
+        )
         for word in game.get_valid_words():
             if word["word"][0] == starting_letter:
-                print(f"{word['word']}, ", end="")
+                print(f"{word['word']}\t", end="")
         print()
 
 

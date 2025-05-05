@@ -57,6 +57,10 @@ class TestJottoGame(unittest.TestCase):
         self.game_exist.add_guess("exist")
         self.assertEqual(self.game_exist.get_status(), "Won")
 
+    def test_is_guess_word_valid(self):
+        self.assertEqual(self.game_exist.is_guess_word_valid("snake"), True)
+        self.assertEqual(self.game_exist.is_guess_word_valid("aaaaa"), False)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -32,6 +32,7 @@ class TestJottoGame(unittest.TestCase):
         self.assertEqual(self.game_exist.calculate_jots("saaaa"), 1)
         self.assertEqual(self.game_exist.calculate_jots("sxaaa"), 2)
         self.assertEqual(self.game_exist.calculate_jots("tsiaa"), 3)
+        self.assertEqual(self.game_exist.calculate_jots("state"), 3)
         self.assertEqual(self.game_exist.calculate_jots("tsixa"), 4)
         self.assertEqual(self.game_exist.calculate_jots("exits"), 5)
         self.assertEqual(self.game_exist.calculate_jots("exist"), 5)
@@ -50,6 +51,7 @@ class TestJottoGame(unittest.TestCase):
         self.assertEqual(self.game_exist.add_guess("exist"), "5 jots!")
 
     def test_get_status_won(self):
+        self.game_exist.add_guess("exist")
         self.assertEqual(self.game_exist.get_status(), "Won")
 
 

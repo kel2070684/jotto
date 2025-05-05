@@ -8,6 +8,7 @@ Jotto is a simple word guessing game
 
 from random import randint
 import csv
+from collections import Counter
 
 
 class JottoGame:
@@ -23,9 +24,9 @@ class JottoGame:
 
     def print_game_info(self):
         print(f"\nGame status: {self.status}")
-        print(f"Number of guesses: {len(self.guesses)}\n")
+        print(f"Number of guesses: {len(self.guesses)}")
         for guess in self.guesses:
-            print(f"\tGuess: {guess['word']}\t Jots: {guess['jots']}")
+            print(f"\tGuess: {guess['guess']}\t Jots: {guess['jots']}")
 
     def get_status(self):
         return self.status
@@ -53,21 +54,21 @@ class JottoGame:
 
     def add_guess(self, guess_word):
         guess_word = guess_word.lower()
-        if self.is_guess_word_valid(guess_word):
-            isJotto = False
-            jots = 0
+        isJotto = False
+        jots = 0
 
-            if self.__secret_word["word"] == guess_word:
+        if not self.is_guess_word_valid(guess_word):
+            return "guess is invalid"
+        else:
+            if self.__secret_word["word"] != guess_word:
+                jots = self.calculate_jots(guess_word)
+            else:
                 jots = 5
                 isJotto = True
                 self.status = "Won"
-            else:
-                jots = self.calculate_jots(guess_word)
 
-            self.guesses.append({"Guess": guess_word, "Jots": jots, "Jotto": isJotto})
-            return f"{self.guesses[-1]["Jots"]} jots!"
-        else:
-            return "guess is invalid"
+            self.guesses.append({"guess": guess_word, "jots": jots, "Jotto": isJotto})
+            return f"{self.guesses[-1]["jots"]} jots!"
 
     def is_guess_word_valid(self, guess_word):
         is_valid = False
@@ -81,17 +82,10 @@ class JottoGame:
         return is_valid
 
     def calculate_jots(self, guess_word):
-        jots = 0
-        guess_word = guess_word.lower()
+        guess_letters = Counter(guess_word.lower())
+        target_letters = Counter(self.__secret_word["word"])
 
-        for letter in guess_word:
-            for character in self.__secret_word["word"]:
-                if letter == character:
-                    jots += 1
-                    character = "!"
-                    letter = "@"
-
-        return jots
+        return (guess_letters & target_letters).total()
 
     def print_guesses(self):
         for guess in self.guesses:
